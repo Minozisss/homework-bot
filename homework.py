@@ -1,4 +1,4 @@
-"""Телеграм-бот, который следит за статусами домашних работ в Практикуме"""
+"""Телеграм-бот, который следит за статусами домашних работ в Практикуме."""
 
 import logging
 import os
@@ -30,15 +30,15 @@ HOMEWORK_VERDICTS = {
 
 
 class APIRequestError(Exception):
-    """Ошибка, если с запросом к API что-то пошло не так"""
+    """Ошибка, если с запросом к API что-то пошло не так."""
 
 
 class InvalidAPIResponseError(Exception):
-    """Ошибка, если API вернуло ответ не в том формате, который ждем"""
+    """Ошибка, если API вернуло ответ не в том формате, который ждем."""
 
 
 class InvalidHomeworkStatusError(Exception):
-    """Ошибка, если у домашки прилетел непонятный статус"""
+    """Ошибка, если у домашки прилетел непонятный статус."""
 
 
 logging.basicConfig(
@@ -50,7 +50,7 @@ logger = logging.getLogger(__name__)
 
 
 def check_tokens():
-    """Проверяет, что все нужные переменные окружения вообще есть"""
+    """Проверяет, что все нужные переменные окружения вообще есть."""
     tokens = {
         'PRACTICUM_TOKEN': PRACTICUM_TOKEN,
         'TELEGRAM_TOKEN': TELEGRAM_TOKEN,
@@ -67,7 +67,7 @@ def check_tokens():
 
 
 def send_message(bot, message):
-    """Отправляет сообщение в Телеграм и пишет в лог, как всё прошло"""
+    """Отправляет сообщение в Телеграм и пишет в лог, как всё прошло."""
     try:
         bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
         logger.debug('Бот отправил сообщение "%s"', message)
@@ -76,7 +76,7 @@ def send_message(bot, message):
 
 
 def get_api_answer(timestamp):
-    """Ходит в API Практикума и забирает свежий ответ по домашкам"""
+    """Ходит в API Практикума и забирает свежий ответ по домашкам."""
     try:
         response = requests.get(
             ENDPOINT,
@@ -104,7 +104,7 @@ def get_api_answer(timestamp):
 
 
 def check_response(response):
-    """Проверяет ответ API и достает из него список домашних работ"""
+    """Проверяет ответ API и достает из него список домашних работ."""
     if not isinstance(response, dict):
         logger.error('Ответ API имеет неверный тип: %s', type(response))
         raise TypeError('Ответ API должен быть словарем.')
@@ -124,7 +124,7 @@ def check_response(response):
 
 
 def parse_status(homework):
-    """Собирает текст сообщения по статусу одной конкретной домашки"""
+    """Собирает текст сообщения по статусу одной конкретной домашки."""
     if 'homework_name' not in homework:
         logger.error('В ответе API отсутствует ключ "homework_name".')
         raise InvalidAPIResponseError(
@@ -154,7 +154,7 @@ def parse_status(homework):
 
 
 def main():
-    """Запускает основную логику бота в бесконечном цикле"""
+    """Запускает основную логику бота в бесконечном цикле."""
     if not check_tokens():
         raise SystemExit('Отсутствуют обязательные переменные окружения.')
 
